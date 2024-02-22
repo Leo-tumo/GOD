@@ -2,35 +2,70 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"strconv"
+	"github.com/inancgumus/screen"
+	"github.com/mattn/go-runewidth"
+	"time"
 )
 
 func main() {
-	ships := []string{"Normandy", "Verrikan", "Nexus", "Warsaw"}
+	const (
+		cellEmpty = ' '
+		cellBall  = '⚾'
 
-	fmt.Printf("%q\n\n", ships)
+		maxFrames = 1200
+		speed     = time.Second / 20
 
-	from, to := 0, len(ships)
+		// initial velocities
+		ivx, ivy = 1, 1
+	)
 
-	switch len(os.Args) {
-	default:
-		fallthrough
-	case 1:
-		fmt.Println("Provide only the [starting] and [stopping] positions")
-		return
-	case 3:
-		to, _ = strconv.Atoi(os.Args[2])
-		fallthrough
-	case 2:
-		from, _ = strconv.Atoi(os.Args[1])
+	var (
+		px, py int
+		vx, vy = ivx, ivy
+
+		cell rune
+	)
+
+	width, height := screen.Size()
+	width /= runewidth.RuneWidth(cellBall)
+	height--
+
+	buf := make([]rune, 0, (width*2+1)*height)
+
+	screen.Clear()
+	fmt.Print("\033[?25l")
+
+	for i := 0; i < maxFrames; i++ {
+
+		px += vx
+		py += vy
+
+		if px <= 0 || px >= width-1 {
+			vx *= -1
+		}
+		if py <= 0 || py >= height-1 {
+			vy *= -1
+		}
+
+		buf = buf[:0]
+
+		for y := 0; y < height; y++ {
+			for x := 0; x < width; x++ {
+				cell = cellEmpty
+
+				if px == x && py == y {
+					cell = cellBall
+				}
+
+				buf = append(buf, cell, ' ')
+			}
+			buf = append(buf, '\n')
+		}
+
+		screen.MoveTopLeft()
+		fmt.Print("[1;31m", string(buf))
+
+		time.Sleep(speed)
 	}
-
-	if l := len(ships); from < 0 || to > l || from > to {
-		fmt.Println("Wrong positions")
-		return
-	}
-
-	fmt.Println(ships[from:to])
-
+	fmt.Print("\033[?25h")
 }
