@@ -1,11 +1,13 @@
 package main
 
-import "fmt"
-import "runtime"
+import (
+	f "fmt"
+	"github.com/Leo-tumo/learngo/version"
+)
 
 func main() {
-	fmt.Println("Hello Gopher!")
-	fmt.Println(runtime.NumCPU() + 1)
+	f.Println("Hello Gopher!")
+	version.Version()
 	bye()
 	hey()
 }
