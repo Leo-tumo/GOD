@@ -1,8 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 func main() {
+
 	l := list{
 		{title: "moby dick", price: 10, released: toTimestamp(118281600)},
 		{title: "odyssey", price: 15, released: toTimestamp("733622400")},
@@ -12,6 +16,10 @@ func main() {
 		//{title: "tetris", price: 5},
 		//{title: "yoda", price: 150},
 	}
+
+	//sort.Sort(l)
+
+	sort.Sort(sort.Reverse(&byRelease{l}))
 
 	l.discount(.5)
 	fmt.Print(l)
