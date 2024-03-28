@@ -25,3 +25,7 @@ func main() {
 	fmt.Print(l)
 
 }
+
+func write(arg int, args ...interface{}) error {
+
+}
