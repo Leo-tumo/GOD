@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"runtime"
 	"time"
 )
 
@@ -57,4 +58,6 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Printf("%q\n", body)
+
+	fmt.Println(runtime.GOMAXPROCS(0))
 }
