@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/Leo-tumo/learngo/Todo-app/pkg/service"
+	"github.com/fatih/color"
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,10 +11,12 @@ type Handler struct {
 }
 
 func NewHandler(services *service.Service) *Handler {
+	color.Magenta("\t\t NEW HANDLER")
 	return &Handler{services: services}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
+	color.Magenta("\t\t INIT ROUTES // from handler")
 	router := gin.New()
 
 	auth := router.Group("/auth")

@@ -26,7 +26,7 @@ func main() {
 }
 
 func parse(ctx context.Context) {
- 
+
 	id := ctx.Value("id")
 	fmt.Println(id.(float32))
 	client := http.DefaultClient

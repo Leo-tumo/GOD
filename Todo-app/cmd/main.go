@@ -5,20 +5,27 @@ import (
 	"github.com/Leo-tumo/learngo/Todo-app/pkg/handler"
 	"github.com/Leo-tumo/learngo/Todo-app/pkg/repository"
 	"github.com/Leo-tumo/learngo/Todo-app/pkg/service"
+	"github.com/fatih/color"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"log"
 	"os"
 )
 
 func main() {
+
+	color.Red("\t\t MAIN STARTED")
+
+	logrus.SetFormatter(&logrus.JSONFormatter{}) // log in json format for easy error tracking
+
 	if err := initConfig(); err != nil {
-		log.Fatalf("error initializing config: %s", err.Error())
+		logrus.Fatalf("error initializing config: %s", err.Error())
 	}
 
 	if err := godotenv.Load(); err != nil {
-		log.Fatalf("error loading .env file: %s", err.Error())
+		logrus.Fatalf("error loading .env file: %s", err.Error())
 	}
 
 	db, err := repository.NewPostgresDB(repository.Config{
@@ -30,7 +37,7 @@ func main() {
 		SSLMode:  viper.GetString("db.sslmode"),
 	})
 	if err != nil {
-		log.Fatalf("error initializing db: %s", err.Error())
+		logrus.Fatalf("error initializing db: %s", err.Error())
 	}
 
 	repos := repository.NewRepository(db)

@@ -1,7 +1,7 @@
- package main
+package main
 
- import "fmt"
+import "fmt"
 
- func bye() {
- 	fmt.Println("Bye!")
- }
+func bye() {
+	fmt.Println("Bye!")
+}

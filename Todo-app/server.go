@@ -2,6 +2,7 @@ package todo
 
 import (
 	"context"
+	"github.com/fatih/color"
 	"net/http"
 	"time"
 )
@@ -11,6 +12,9 @@ type Server struct {
 }
 
 func (s *Server) Run(port string, handler http.Handler) error {
+
+	color.Green("\t\tRUN // from server.go // Running server on port " + port)
+
 	s.httpServer = &http.Server{
 		Addr:           ":" + port,
 		Handler:        handler,
