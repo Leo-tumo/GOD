@@ -6,12 +6,16 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type ft_error struct {
+type errorResponse struct {
 	Message string `json:"message"`
+}
+
+type statusResponse struct {
+	Status string `json:"status"`
 }
 
 func newErrorResponse(c *gin.Context, status int, message string) {
 	color.Magenta("\t\t NEW ERROR RESPONSE // from handler ")
 	logrus.Errorf(message)
-	c.AbortWithStatusJSON(status, ft_error{message})
+	c.AbortWithStatusJSON(status, errorResponse{message})
 }

@@ -53,6 +53,23 @@ func (s *AuthService) GenerateToken(username, password string) (string, error) {
 	return token.SignedString([]byte(signingKey))
 }
 
+func (s *AuthService) ParseToken(accessToken string) (int, error) {
+	toker, err := jwt.ParseWithClaims(accessToken, &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(signingKey), nil
+	})
+	if err != nil {
+		return 0, err
+	}
+	claims, ok := toker.Claims.(*tokenClaims)
+	if !ok {
+		return 0, fmt.Errorf("invalid token claims")
+	}
+	return claims.UserId, nil
+}
+
 func generatePasswordHash(password string) string {
 	color.Green("\t\t GENERATE PASSWORD HASH // from service")
 	hash := sha1.New()
